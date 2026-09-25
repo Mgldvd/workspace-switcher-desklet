@@ -166,10 +166,35 @@ def test_monitors(inst):
     inst.set("monitor", "primary")
     check("primary = no copies", js("return D._clones.length;") == 0)
 
+    options = js("return Object.values(D.settings.getOptions('monitor'));")
+    expected = ["primary", "all"] + [str(i) for i in range(monitors)]
+    check(f"monitor list offers the {monitors} connected monitor(s)", options == expected, options)
+    inst.set("monitor", "7")
+    home, primary = js("return [D._home, Main.layoutManager.primaryIndex];")
+    check("missing monitor falls back to primary", home == primary, f"home {home}, primary {primary}")
+    inst.set("monitor", "primary")
+
+
+def test_reload(inst):
+    print("Reload")
+    monitors = js("return Main.layoutManager.monitors.length;")
+    inst.set("monitor", "all")
+    call("ReloadXlet", "(ss)", UUID, "DESKLET")
+    time.sleep(1.5)  # the old instance fades out before it is removed
+    registered = js(f"return Main.settingsManager.uuids['{UUID}']['{inst.id}'] === D.settings;")
+    check("new instance keeps its settings registered", registered)
+    clones = js("return Main.deskletContainer.actor.get_parent().get_children()"
+                ".filter(a => a._monitor !== undefined && a._rects).length;")
+    check(f"no leftover copies ({monitors - 1} expected)", clones == monitors - 1, clones)
+    inst.set("width", 90)
+    check("settings still apply after reload", js("return D._box._rects[0].get_width();") == 90)
+    inst.set("monitor", "primary")
+
 
 def test_scroll(inst, n):
     print("Mouse wheel")
-    scroll = ("return D._onScroll({get_scroll_direction: () => imports.gi.Clutter.ScrollDirection.%s})"
+    scroll = ("return D._onScroll({get_scroll_direction: () => imports.gi.Clutter.ScrollDirection.%s,"
+              " is_pointer_emulated: () => false})"
               " + ':' + wm.get_active_workspace_index();")
     js(f"wm.get_workspace_by_index({n - 1}).activate(global.get_current_time());")
     inst.set("scroll-switch", True)
@@ -180,6 +205,25 @@ def test_scroll(inst, n):
     check("wrap: first -> last", js(scroll % "UP") == f"true:{n - 1}")
     inst.set("scroll-switch", False)
     check("disabled: event not handled", js(scroll % "UP") == f"false:{n - 1}")
+
+
+def test_touchpad(inst, n):
+    print("Touchpad")
+    # (time in ms, vertical delta) -> workspace expected afterwards
+    smooth = ("return D._onScroll({get_scroll_direction: () => imports.gi.Clutter.ScrollDirection.SMOOTH,"
+              " get_scroll_delta: () => [0, %s], get_time: () => %d}) + ':' + wm.get_active_workspace_index();")
+    emulated = ("return D._onScroll({get_scroll_direction: () => imports.gi.Clutter.ScrollDirection.DOWN,"
+                " is_pointer_emulated: () => true}) + ':' + wm.get_active_workspace_index();")
+    js("wm.get_workspace_by_index(0).activate(global.get_current_time());"
+       "D._scrollTime = 0; D._scrollBlockedUntil = 0; D._scrollDelta = 0;")
+    inst.set("scroll-switch", True)
+    inst.set("scroll-wrap", False)
+    t = 10_000_000
+    check("small delta: no switch yet", js(smooth % (0.5, t)) == "true:0")
+    check("deltas add up to a switch", js(smooth % (0.5, t + 10)) == "true:1")
+    check("rest of the swipe ignored", js(smooth % (3, t + 20)) == "true:1")
+    check("emulated wheel step ignored", js(emulated) == "true:1")
+    check("new swipe switches back", js(smooth % (-1, t + 500)) == "true:0")
 
 
 def main():
@@ -196,6 +240,8 @@ def main():
         test_monitors(inst)
         if n >= 2:
             test_scroll(inst, n)
+            test_touchpad(inst, n)
+        test_reload(inst)
     finally:
         inst.restore()
         js(f"wm.get_workspace_by_index({start_ws}).activate(global.get_current_time());")

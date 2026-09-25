@@ -3,6 +3,18 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+
+- Touchpad scrolling now switches workspaces: smooth scroll events are added up, and one swipe moves one workspace instead of racing through all of them.
+- The monitor list shows every connected monitor instead of stopping at 4. If the chosen monitor is unplugged, the desklet goes to the primary monitor instead of the last one.
+- Cleanup on reload or removal now happens right away instead of after the fade-out, so the old instance can no longer unregister the new instance's settings. Removes the workaround that edited Cinnamon's internal settings registry.
+
+### Added
+
+- Live tests for touchpad scrolling, the monitor list and reloading.
+
 ## [1.0.1] - 2026-09-25
 
 ### Added
