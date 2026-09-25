@@ -86,6 +86,7 @@ The repository follows the official [Cinnamon Spices](https://github.com/linuxmi
 
 ```
 workspace-switcher-desklet@mgldvd/
+├── README.md, banner.png      # page on the Spices website
 ├── info.json                  # Spices metadata (author)
 ├── screenshot.png             # shown on the Spices website
 └── files/workspace-switcher-desklet@mgldvd/

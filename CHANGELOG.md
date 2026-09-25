@@ -3,6 +3,12 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-09-25
+
+### Added
+
+- README and banner for the desklet's page on the Cinnamon Spices website.
+
 ## [1.0.0] - 2026-09-24
 
 First release.
@@ -20,4 +26,5 @@ First release.
 - Translations: Spanish, Portuguese (Brazil), German, French, Russian, Italian, Polish and Simplified Chinese.
 - Tests: `tests/official_checks.py` runs the official Cinnamon Spices checks, and `tests/live_test.py` tests the running desklet.
 
+[1.0.1]: https://github.com/mgldvd/workspace-switcher-desklet/releases/tag/v1.0.1
 [1.0.0]: https://github.com/mgldvd/workspace-switcher-desklet/releases/tag/v1.0.0
