@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
+  <defs>
+    <!-- pastel mesh: soft color blobs over a near-white base -->
+    <radialGradient id="lavender" gradientUnits="userSpaceOnUse" cx="120" cy="20" r="520">
+      <stop offset="0" stop-color="#c7b6ff"/>
+      <stop offset="1" stop-color="#c7b6ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pink" gradientUnits="userSpaceOnUse" cx="1180" cy="30" r="460">
+      <stop offset="0" stop-color="#ffc3df"/>
+      <stop offset="1" stop-color="#ffc3df" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="peach" gradientUnits="userSpaceOnUse" cx="1150" cy="380" r="420">
+      <stop offset="0" stop-color="#ffd8b5"/>
+      <stop offset="1" stop-color="#ffd8b5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mint" gradientUnits="userSpaceOnUse" cx="380" cy="400" r="480">
+      <stop offset="0" stop-color="#b5eed8"/>
+      <stop offset="1" stop-color="#b5eed8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sky" gradientUnits="userSpaceOnUse" cx="760" cy="180" r="380">
+      <stop offset="0" stop-color="#bcdcff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#bcdcff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7bff"/>
+      <stop offset="1" stop-color="#5aa9ff"/>
+    </linearGradient>
+    <clipPath id="card">
+      <rect width="1280" height="360"/>
+    </clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dy="4" result="blur"/>
+      <feFlood flood-color="#3a3470" flood-opacity="0.22"/>
+      <feComposite in2="blur" operator="in" result="shade"/>
+      <feMerge>
+        <feMergeNode in="shade"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g clip-path="url(#card)">
+    <rect width="1280" height="360" fill="#f7f5ff"/>
+    <rect width="1280" height="360" fill="url(#lavender)"/>
+    <rect width="1280" height="360" fill="url(#pink)"/>
+    <rect width="1280" height="360" fill="url(#peach)"/>
+    <rect width="1280" height="360" fill="url(#mint)"/>
+    <rect width="1280" height="360" fill="url(#sky)"/>
+  </g>
+
+  <!-- text -->
+  <g font-family="Noto Sans, Ubuntu, Helvetica, Arial, sans-serif" fill="#1e2140">
+    <text x="88" y="168" font-size="52" font-weight="700" letter-spacing="-0.5">Workspace Switcher</text>
+    <text x="88" y="222" font-size="52" font-weight="300" fill-opacity="0.75">Desklet</text>
+    <text x="90" y="276" font-size="20" fill-opacity="0.6" letter-spacing="0.4">Switch workspaces right from your Cinnamon desktop</text>
+  </g>
+
+  <!-- workspaces -->
+  <g stroke="#4a4d8c" stroke-opacity="0.5" stroke-width="4" stroke-linejoin="round">
+    <rect x="850" y="84" width="150" height="88" rx="12" fill="#ffffff" fill-opacity="0.55"/>
+    <rect x="1024" y="84" width="150" height="88" rx="12" fill="#ffffff" fill-opacity="0.55"/>
+    <rect x="1024" y="196" width="150" height="88" rx="12" fill="#ffffff" fill-opacity="0.55"/>
+  </g>
+  <!-- active -->
+  <rect x="850" y="196" width="150" height="88" rx="12" fill="url(#accent)" filter="url(#shadow)"/>
+
+  <!-- pointer -->
+  <path transform="translate(948 238) scale(1.5)"
+        d="M0 0 L0 34 L9 26 L15 39 L21 36 L15 24 L27 24 Z"
+        fill="#ffffff" stroke="#2a2d5a" stroke-width="2.4" stroke-linejoin="round"
+        filter="url(#shadow)"/>
+</svg>
